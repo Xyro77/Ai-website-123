@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HZ AI Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042);
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Landing Page Styles */
+        .landing-container {
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .landing-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .landing-subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+
+        .start-btn {
+            padding: 16px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(168, 85, 247, 0.6);
+        }
+
+        /* Chat Page Styles */
+        .chat-container {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .chat-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h2 {
+            font-size: 1.4rem;
+            color: #f8fafc;
+        }
+
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+        }
+
+        .messages-box {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 14px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .input-area {
+            padding: 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        .input-area input:focus {
+            border-color: #818cf8;
+        }
+
+        .send-btn {
+            padding: 16px 28px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .send-btn:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Landing Screen -->
+    <div class="landing-container" id="landingScreen">
+        <h1 class="landing-title">Next-Gen AI Assistant</h1>
+        <p class="landing-subtitle">Experience seamless intelligence and real-time conversation.</p>
+        <button class="start-btn" onclick="startApp()">Start AI</button>
+    </div>
+
+    <!-- Chat Screen -->
+    <div class="chat-container" id="chatScreen">
+        <div class="chat-header">
+            <h2>Gemini 3.8 Flash Assistant</h2>
+            <span class="status-badge">Online</span>
+        </div>
+        <div class="messages-box" id="messagesBox">
+            <div class="message ai-message">
+                Hello! How can I assist you today?
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function startApp() {
+            document.getElementById('landingScreen').style.display = 'none';
+            const chatScreen = document.getElementById('chatScreen');
+            chatScreen.style.display = 'flex';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('userInput');
+            const messageText = inputField.value.trim();
+            if (!messageText) return;
+
+            const messagesBox = document.getElementById('messagesBox');
+
+            // Append User Message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.textContent = messageText;
+            messagesBox.appendChild(userDiv);
+
+            inputField.value = '';
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+
+            // Placeholder AI Response
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            aiDiv.textContent = 'Thinking...';
+            messagesBox.appendChild(aiDiv);
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: messageText })
+                });
+
+                const data = await response.json();
+                aiDiv.textContent = data.reply || "Sorry, I couldn't generate a response.";
+            } catch (error) {
+                aiDiv.textContent = "Error communicating with server.";
+            }
+            
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
